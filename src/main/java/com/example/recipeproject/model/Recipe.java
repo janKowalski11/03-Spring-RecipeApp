@@ -36,7 +36,7 @@ public class Recipe
      * znaczy ze jesli usuniemy recipe to usuniemy wszystkie skladniki
      * a jesl usuiniemy skadnik to nie usuniemy recipe
      * */
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "recipe")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
     private Set<Ingredient> ingredients;
 
     /*
@@ -44,6 +44,11 @@ public class Recipe
      * */
     @Lob
     private Byte[] image;
+
+    /*wartosci enuma konwerowane do stringa i wsazane do bazy
+    * w ordinal warosci numerowane i numery do bazy.*/
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
 
     /*cascade:
      *  tworzy kaskadowe polaczenie recipe -> notes, to powoduje np:
@@ -160,6 +165,16 @@ public class Recipe
     public void setImage(Byte[] image)
     {
         this.image = image;
+    }
+
+    public Difficulty getDifficulty()
+    {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty)
+    {
+        this.difficulty = difficulty;
     }
 
     public Notes getNotes()
