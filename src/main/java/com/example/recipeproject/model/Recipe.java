@@ -5,6 +5,7 @@ Date: 03.11.2018
 */
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Recipe
@@ -19,10 +20,25 @@ public class Recipe
     private Integer servings;
     private String Source;
     private String url;
-    private String directins;
+    private String directions;
     //TODO add
     //private Difficulty difficulty ;
     // (difficulty is an enum type)
+
+    /*
+     *      wytlumaczenie mappedby :
+     * https://stackoverflow.com/a/9108618/9611203
+     * Value of mappedBy is name of the field that is owning side of bidirectional relationship.
+     * Required unless the relationship is unidirectional.
+     * znaczy ze recipe jest tym obiektem one a ingredients many
+     * znaczy ze ingredients beda przechowywac id recipe bo sa mapowane dla recipe
+     *
+     *      Cascade:
+     * znaczy ze jesli usuniemy recipe to usuniemy wszystkie skladniki
+     * a jesl usuiniemy skadnik to nie usuniemy recipe
+     * */
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private Set<Ingredient> ingredients;
 
     /*
      * opis @Lob -> w clasie Notes
@@ -30,13 +46,19 @@ public class Recipe
     @Lob
     private Byte[] image;
 
-    /*
-     * sprawia ze recipe jest wlascicielem notes (przygotowanie)
-     * tworzy kaskadowe polaczenie recipe -> notes, to powoduje np:
+    /*cascade:
+     *  tworzy kaskadowe polaczenie recipe -> notes, to powoduje np:
      * jesli usuniemy obj recipe to usuniemy notes
-     * jesli usuniemy notes nie usuniemy recipe bo to recipe jest owner w
-     * tym poloczeniu kaskadowy
-     */
+     * jesli usuniemy notes nie usuniemy recipe.
+     *  Cascade nie specyfikuje
+     * wlasciciela relacji, tylko mappedby, jednak w tym przypadku
+     *
+    /*
+     Jak utworzyc bidirectional relationship:
+    This is bidirectional relationship between Recipe and Notes
+     since both of the classes happen to have
+      each other's reference marked with @OneToOne annotaion
+      */
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
 
@@ -45,6 +67,7 @@ public class Recipe
         return id;
     }
 
+    //Setter do id jest potrzebny zeby hibernate mogl ustawic id
     public void setId(Long id)
     {
         this.id = id;
@@ -110,14 +133,24 @@ public class Recipe
         this.url = url;
     }
 
-    public String getDirectins()
+    public String getDirections()
     {
-        return directins;
+        return directions;
     }
 
-    public void setDirectins(String directins)
+    public void setDirections(String directions)
     {
-        this.directins = directins;
+        this.directions = directions;
+    }
+
+    public Set<Ingredient> getIngredients()
+    {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients)
+    {
+        this.ingredients = ingredients;
     }
 
     public Byte[] getImage()
