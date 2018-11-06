@@ -13,7 +13,7 @@ public class Notes
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "Recipe")
+    @OneToOne
     private Recipe recipe;
 
     /*

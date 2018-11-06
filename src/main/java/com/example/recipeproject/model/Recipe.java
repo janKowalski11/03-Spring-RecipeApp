@@ -46,7 +46,7 @@ public class Recipe
     private Byte[] image;
 
     /*wartosci enuma konwerowane do stringa i wsazane do bazy
-    * w ordinal warosci numerowane i numery do bazy.*/
+     * w ordinal warosci numerowane i numery do bazy.*/
     @Enumerated(value = EnumType.STRING)
     private Difficulty difficulty;
 
@@ -65,6 +65,25 @@ public class Recipe
       */
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
+
+    /*
+    *JoinTable:
+    * -utworz polaczona tabele o nazwie name
+    * -polacz columne o nazwie recipe id i ona bedzie miec id
+    * wlasciciela relacji
+    * -polacz kolumne o nazwie category id i ona ma id
+    * nie-wlasciciela
+    * p.s usunac @jointable i mappedby po 2giej stronie
+     * i zobaczyc jak dziala bez tego
+    * zeb lepiej zrozumiec co robi ta anotacja
+    *
+    * */
+    @ManyToMany
+    @JoinTable(name = "recipe_category",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+
+    private Set<Category> categories;
 
     public Long getId()
     {
@@ -185,5 +204,15 @@ public class Recipe
     public void setNotes(Notes notes)
     {
         this.notes = notes;
+    }
+
+    public Set<Category> getCategories()
+    {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories)
+    {
+        this.categories = categories;
     }
 }
