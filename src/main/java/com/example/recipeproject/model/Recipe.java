@@ -32,12 +32,11 @@ public class Recipe
      * Required unless the relationship is unidirectional.
      * znaczy ze recipe jest tym obiektem one a ingredients many
      * znaczy ze ingredients beda przechowywac id recipe bo sa mapowane dla recipe
-     *
      *      Cascade:
      * znaczy ze jesli usuniemy recipe to usuniemy wszystkie skladniki
      * a jesl usuiniemy skadnik to nie usuniemy recipe
      * */
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "recipe")
     private Set<Ingredient> ingredients;
 
     /*
