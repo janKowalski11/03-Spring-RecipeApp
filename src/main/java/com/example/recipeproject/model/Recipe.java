@@ -5,6 +5,7 @@ Date: 03.11.2018
 */
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,10 +21,9 @@ public class Recipe
     private Integer servings;
     private String Source;
     private String url;
+
+    @Lob
     private String directions;
-    //TODO add
-    //private Difficulty difficulty ;
-    // (difficulty is an enum type)
 
     /*
      *      wytlumaczenie mappedby :
@@ -37,7 +37,7 @@ public class Recipe
      * a jesl usuiniemy skadnik to nie usuniemy recipe
      * */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients=new HashSet<>();
 
     /*
      * opis @Lob -> w clasie Notes
@@ -83,7 +83,7 @@ public class Recipe
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
 
-    private Set<Category> categories;
+    private Set<Category> categories=new HashSet<>();
 
     public Long getId()
     {

@@ -4,38 +4,31 @@ Author: BeGieU
 Date: 27.10.2018
 */
 
-import com.example.recipeproject.model.Category;
-import com.example.recipeproject.model.UnitOfMeasure;
-import com.example.recipeproject.repositories.CategoryRepository;
-import com.example.recipeproject.repositories.UnitOfMeasureRepository;
+import com.example.recipeproject.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+//TODO fix that index page doesn't show recipes !!!
 
-import java.util.Optional;
+//TODO add java configuration
 
 @Controller
 public class IndexController
 {
-    private CategoryRepository categoryRepository;
-    private UnitOfMeasureRepository unitOfMeasureRepository;
+
+    private final RecipeService recipeService;
 
     @Autowired
-    public IndexController(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository)
+    public IndexController(RecipeService recipeService)
     {
-        this.categoryRepository = categoryRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
+        this.recipeService = recipeService;
     }
 
     @RequestMapping({"", "/", "/index"})
-    public String getIndexPage()
+    public String getIndexPage(Model model)
     {
-        //uzywamy optional bo moze zwrocic nulla
-        Optional<Category> categoryOptional = categoryRepository.findByDescription("American");
-        Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
-
-        System.out.println("category id :" + categoryOptional.get().getId());
-        System.out.println("unit id: " + unitOfMeasureOptional.get().getId());
+        model.addAttribute("recipes", recipeService.getRecipes());
 
         return "index";
     }

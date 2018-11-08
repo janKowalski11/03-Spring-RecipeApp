@@ -5,6 +5,7 @@ Date: 06.11.2018
 */
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,7 @@ public class Category
 
     //mappedBy mowi zekonfiguracja relacji po 2gej stronie
     @ManyToMany(mappedBy = "categories")
-    private Set<Recipe> recipes;
+    private Set<Recipe> recipes=new HashSet<>();
 
     public Long getId()
     {
