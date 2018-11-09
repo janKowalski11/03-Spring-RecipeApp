@@ -7,6 +7,6 @@ Date: 07.11.2018
 import com.example.recipeproject.model.Recipe;
 import org.springframework.data.repository.CrudRepository;
 
-public interface RecipeRepository extends CrudRepository<Recipe,Long>
+public interface RecipeRepository extends CrudRepository<Recipe, Long>
 {
 }

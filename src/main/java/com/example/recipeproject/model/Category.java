@@ -19,7 +19,7 @@ public class Category
 
     //mappedBy mowi zekonfiguracja relacji po 2gej stronie
     @ManyToMany(mappedBy = "categories")
-    private Set<Recipe> recipes=new HashSet<>();
+    private Set<Recipe> recipes = new HashSet<>();
 
     public Long getId()
     {

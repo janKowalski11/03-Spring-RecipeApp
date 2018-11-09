@@ -37,7 +37,7 @@ public class Recipe
      * a jesl usuiniemy skadnik to nie usuniemy recipe
      * */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients=new HashSet<>();
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     /*
      * opis @Lob -> w clasie Notes
@@ -67,23 +67,23 @@ public class Recipe
     private Notes notes;
 
     /*
-    *JoinTable:
-    * -utworz polaczona tabele o nazwie name
-    * -polacz columne o nazwie recipe id i ona bedzie miec id
-    * wlasciciela relacji
-    * -polacz kolumne o nazwie category id i ona ma id
-    * nie-wlasciciela
-    * p.s usunac @jointable i mappedby po 2giej stronie
+     *JoinTable:
+     * -utworz polaczona tabele o nazwie name
+     * -polacz columne o nazwie recipe id i ona bedzie miec id
+     * wlasciciela relacji
+     * -polacz kolumne o nazwie category id i ona ma id
+     * nie-wlasciciela
+     * p.s usunac @jointable i mappedby po 2giej stronie
      * i zobaczyc jak dziala bez tego
-    * zeb lepiej zrozumiec co robi ta anotacja
-    *
-    * */
+     * zeb lepiej zrozumiec co robi ta anotacja
+     *
+     * */
     @ManyToMany
     @JoinTable(name = "recipe_category",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
 
-    private Set<Category> categories=new HashSet<>();
+    private Set<Category> categories = new HashSet<>();
 
     public Long getId()
     {
@@ -176,6 +176,14 @@ public class Recipe
         this.ingredients = ingredients;
     }
 
+    public Recipe addIngredient(Ingredient ingredient)
+    {
+        ingredient.setRecipe(this);
+        ingredients.add(ingredient);
+
+        return this;
+    }
+
     public Byte[] getImage()
     {
         return image;
@@ -204,6 +212,7 @@ public class Recipe
     public void setNotes(Notes notes)
     {
         this.notes = notes;
+        notes.setRecipe(this);
     }
 
     public Set<Category> getCategories()
