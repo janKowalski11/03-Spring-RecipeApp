@@ -3,19 +3,34 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Recipe Home</title>
+
+    <!--ADDING BOOTSTRAP CSS -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <h1>My Recipes!</h1>
 
-<table>
+<table class="table">
+    <thead class="thead-dark">
     <tr>
-        <th>ID</th>
-        <th>Description</th>
+        <th scope="col">#</th>
+        <th scope="col">Description</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="recipe : ${recipes}">
-        <td th:text="${recipe.id}">123</td>
-        <td th:text="${recipe.description}">Tasty Goodnees</td>
+        <td th:text="${recipe.id}">Mark</td>
+        <td th:text="${recipe.description}">Otto</td>
     </tr>
+    </tbody>
 </table>
 </body>
 </html>
