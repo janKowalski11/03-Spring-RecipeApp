@@ -27,7 +27,6 @@ public class RecipeServiceImpl implements RecipeService
     public Set<Recipe> getRecipes()
     {
         Set<Recipe> recipeSet = new HashSet<>();
-        //sposob na skopiowanie setu :))
         recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
         return recipeSet;
     }

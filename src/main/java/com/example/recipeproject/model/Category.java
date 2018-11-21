@@ -4,15 +4,10 @@ Author: BeGieU
 Date: 06.11.2018
 */
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@EqualsAndHashCode(exclude = {"recipes"}) //naprawia wyjatek
 @Entity
 public class Category
 {
@@ -26,13 +21,33 @@ public class Category
     @ManyToMany(mappedBy = "categories")
     private Set<Recipe> recipes = new HashSet<>();
 
-    public Category()
+    public Long getId()
     {
+        return id;
     }
 
-    protected boolean canEqual(final Object other)
+    public void setId(Long id)
     {
-        return other instanceof Category;
+        this.id = id;
     }
 
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public Set<Recipe> getRecipes()
+    {
+        return recipes;
+    }
+
+    public void setRecipes(Set<Recipe> recipes)
+    {
+        this.recipes = recipes;
+    }
 }
