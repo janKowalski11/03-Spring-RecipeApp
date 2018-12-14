@@ -10,10 +10,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 
 public class RecipeServiceImplTest
@@ -48,7 +50,21 @@ public class RecipeServiceImplTest
         Assert.assertEquals(1, recipes.size());
 
         /*sprawdza czy findAll()z klasy recipe repositroy byl wywolany doklanie raz czy wiecej */
-        verify(recipeRepository,times(1)).findAll();
+        verify(recipeRepository, times(1)).findAll();
+
+    }
+
+    @Test
+    public void getRecipeByIdTest() throws Exception
+    {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
+
+        Recipe returnedRecipe=recipeService.findById(anyLong());
+        assertNotNull(returnedRecipe);
+        verify(recipeRepository,times(1)).findById(anyLong());
 
     }
 }
