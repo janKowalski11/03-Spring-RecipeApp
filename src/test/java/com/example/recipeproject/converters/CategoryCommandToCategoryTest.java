@@ -7,10 +7,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class CategoryCommandToIngredientTest
+public class CategoryCommandToCategoryTest
 {
 
-    CategoryCommandToIngredient converter;
+    CategoryCommandToCategory converter;
 
     public final Long ID = 1L;
     public final String DESCRIPTION = "desc";
@@ -18,7 +18,7 @@ public class CategoryCommandToIngredientTest
     @Before
     public void setUp() throws Exception
     {
-        converter = new CategoryCommandToIngredient();
+        converter = new CategoryCommandToCategory();
     }
 
     @Test
