@@ -1,70 +1,74 @@
 package com.example.recipeproject.services;
 
+import com.example.recipeproject.converters.RecipeCommandToRecipe;
+import com.example.recipeproject.converters.RecipeToRecipeCommand;
 import com.example.recipeproject.model.Recipe;
 import com.example.recipeproject.repositories.RecipeRepository;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
+/**
+ * Created by jt on 6/17/17.
+ */
+public class RecipeServiceImplTest {
 
-public class RecipeServiceImplTest
-{
-    private RecipeServiceImpl recipeService;
+    RecipeServiceImpl recipeService;
 
     @Mock
-    private RecipeRepository recipeRepository;
+    RecipeRepository recipeRepository;
+
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
 
     @Before
-    public void setUp() throws Exception
-    {
-        /*inicijalizuje @Mock czyli miejsca gdzie dziala Autowired, czyli innymi slowy
-        nasladuje dependencje z testowanej klasy */
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        recipeService = new RecipeServiceImpl(recipeRepository);
-
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
-    public void getRecipes()
-    {
-        Recipe recipe1 = new Recipe();
-        HashSet<Recipe> recipesData = new HashSet<>();
-        recipesData.add(recipe1);
-
-        /*wymusza ze jesli wywolana metoda getRecipes() to musi zwrocic recipesData*/
-        Mockito.when(recipeService.getRecipes()).thenReturn(recipesData);
-
-        Set<Recipe> recipes = recipeService.getRecipes();
-        Assert.assertEquals(1, recipes.size());
-
-        /*sprawdza czy findAll()z klasy recipe repositroy byl wywolany doklanie raz czy wiecej */
-        verify(recipeRepository, times(1)).findAll();
-
-    }
-
-    @Test
-    public void getRecipeByIdTest() throws Exception
-    {
+    public void getRecipeByIdTest() throws Exception {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
 
-        Recipe returnedRecipe=recipeService.findById(anyLong());
-        assertNotNull(returnedRecipe);
-        verify(recipeRepository,times(1)).findById(anyLong());
+        Recipe recipeReturned = recipeService.findById(1L);
 
+        assertNotNull("Null recipe returned", recipeReturned);
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, never()).findAll();
     }
+
+    @Test
+    public void getRecipesTest() throws Exception {
+
+        Recipe recipe = new Recipe();
+        HashSet receipesData = new HashSet();
+        receipesData.add(recipe);
+
+        when(recipeService.getRecipes()).thenReturn(receipesData);
+
+        Set<Recipe> recipes = recipeService.getRecipes();
+
+        assertEquals(recipes.size(), 1);
+        verify(recipeRepository, times(1)).findAll();
+        verify(recipeRepository, never()).findById(anyLong());
+    }
+
 }
