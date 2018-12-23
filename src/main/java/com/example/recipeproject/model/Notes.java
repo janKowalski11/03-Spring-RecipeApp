@@ -4,14 +4,13 @@ Author: BeGieU
 Date: 03.11.2018
 */
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 
 @Entity
-public class Notes
+public class Notes extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @OneToOne
     private Recipe recipe;
@@ -24,16 +23,6 @@ public class Notes
      * */
     @Lob
     private String recipeNotes;
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
 
     public Recipe getRecipe()
     {

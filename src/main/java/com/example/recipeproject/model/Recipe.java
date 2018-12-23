@@ -9,11 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Recipe
+public class Recipe extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String description;
     private Integer prepTime;
@@ -84,17 +81,6 @@ public class Recipe
             inverseJoinColumns = @JoinColumn(name = "category_id"))
 
     private Set<Category> categories = new HashSet<>();
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    //Setter do id jest potrzebny zeby hibernate mogl ustawic id
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
 
     public String getDescription()
     {

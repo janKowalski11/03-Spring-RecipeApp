@@ -4,16 +4,15 @@ Author: BeGieU
 Date: 03.11.2018
 */
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 
 @Entity
-public class Ingredient
+public class Ingredient extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String description;
     private BigDecimal amount;
 
@@ -35,15 +34,6 @@ public class Ingredient
         this.unitOfMeasure = unitOfMeasure;
     }
 
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
 
     public String getDescription()
     {
