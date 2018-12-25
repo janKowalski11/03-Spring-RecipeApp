@@ -28,7 +28,7 @@ public class RecipeController
     /* {id} oznacza ,że id pobrane z adresu url
      @ParhVariable zmienna pobrana z URL' a
      czyli w tym wypadku id */
-    @RequestMapping("/recipe/show/{id}")
+    @RequestMapping("/recipe/{id}/show")
     public String showById(@PathVariable String id, Model model)
     {
         model.addAttribute("recipe", recipeService.findById(new Long(id)));
@@ -43,8 +43,7 @@ public class RecipeController
         return "recipe/recipeform";
     }
 
-    @PostMapping
-    @RequestMapping(name = "recipe") //maping dla atrybutu o nazwie recipe
+    @PostMapping("/recipe/")
     public String saveOrUpdate(@ModelAttribute RecipeCommand command)
     {
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
