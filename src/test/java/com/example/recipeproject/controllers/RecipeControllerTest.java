@@ -21,7 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by jt on 6/19/17.
  */
-public class RecipeControllerTest {
+public class RecipeControllerTest
+{
 
     @Mock
     RecipeService recipeService;
@@ -31,7 +32,8 @@ public class RecipeControllerTest {
     MockMvc mockMvc;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception
+    {
         MockitoAnnotations.initMocks(this);
 
         controller = new RecipeController(recipeService);
@@ -39,7 +41,8 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void testGetRecipe() throws Exception {
+    public void testGetRecipe() throws Exception
+    {
 
         Recipe recipe = new Recipe();
         recipe.setId(1L);
@@ -53,7 +56,8 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void testGetNewRecipeForm() throws Exception {
+    public void testGetNewRecipeForm() throws Exception
+    {
         RecipeCommand command = new RecipeCommand();
 
         mockMvc.perform(get("/recipe/new"))
@@ -63,7 +67,8 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void testPostNewRecipeForm() throws Exception {
+    public void testPostNewRecipeForm() throws Exception
+    {
         RecipeCommand command = new RecipeCommand();
         command.setId(2L);
 
@@ -79,7 +84,8 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void testGetUpdateView() throws Exception {
+    public void testGetUpdateView() throws Exception
+    {
         RecipeCommand command = new RecipeCommand();
         command.setId(2L);
 

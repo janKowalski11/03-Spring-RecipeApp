@@ -35,13 +35,13 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand>
     }
 
 
-
     @Synchronized
     @Nullable
     @Override
     public RecipeCommand convert(Recipe source)
     {
-        if (source == null) {
+        if (source == null)
+        {
             return null;
         }
 
@@ -57,19 +57,20 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand>
         command.setUrl(source.getUrl());
         command.setNotes(toNotesCommand.convert(source.getNotes()));
 
-        if (source.getCategories() != null && source.getCategories().size() > 0){
+        if (source.getCategories() != null && source.getCategories().size() > 0)
+        {
             source.getCategories()
                     .forEach((Category category) -> command.getCategories().add(toCategoryCommand.convert(category)));
         }
 
-        if (source.getIngredients() != null && source.getIngredients().size() > 0){
+        if (source.getIngredients() != null && source.getIngredients().size() > 0)
+        {
             source.getIngredients()
                     .forEach(ingredient -> command.getIngredients().add(toIngredientCommand.convert(ingredient)));
         }
 
         return command;
     }
-
 
 
 }

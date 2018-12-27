@@ -13,7 +13,6 @@ import java.util.Set;
 public class Category extends  BaseEntity
 {
 
-
     private String description;
 
     //mappedBy mowi zekonfiguracja relacji po 2gej stronie
