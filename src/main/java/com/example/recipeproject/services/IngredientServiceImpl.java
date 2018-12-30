@@ -4,10 +4,9 @@ Author: BeGieU
 Date: 30.12.2018
 */
 
-import com.example.recipeproject.commands.IngredientCommand;
 import com.example.recipeproject.converters.IngredientToIngredientCommand;
-import com.example.recipeproject.model.Recipe;
-import com.example.recipeproject.repositories.RecipeRepository;
+import com.example.recipeproject.model.Ingredient;
+import com.example.recipeproject.repositories.IngredientRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,42 +14,25 @@ import java.util.Optional;
 @Service
 public class IngredientServiceImpl implements IngredientService
 {
-    private  final IngredientToIngredientCommand ingredientToIngredientCommand;
-    private  final RecipeRepository recipeRepository;
+    private final IngredientToIngredientCommand ingredientToIngredientCommand;
+    private final IngredientRepository ingredientRepository;
 
-    public IngredientServiceImpl(IngredientToIngredientCommand ingredientToIngredientCommand, RecipeRepository recipeRepository)
+    public IngredientServiceImpl(IngredientToIngredientCommand ingredientToIngredientCommand, IngredientRepository ingredientRepository)
     {
         this.ingredientToIngredientCommand = ingredientToIngredientCommand;
-        System.out.println(ingredientToIngredientCommand);
-
-        this.recipeRepository = recipeRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
     @Override
-    public IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientID)
+    public Ingredient findById(Long ingredientID)
     {
-        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
-        if (!recipeOptional.isPresent())
+        Optional<Ingredient> ingredientOptional = ingredientRepository.findById(ingredientID);
+        if (!ingredientOptional.isPresent())
         {
-            //todo impl error handling
-            System.out.println("recipe id not found, it's id: " + recipeId);
+            throw new RuntimeException("Ingredient not found, it's id: " + ingredientID);
         }
 
-        Recipe recipe = recipeOptional.get();
-
-        /* elementy ktore spelniaja warunki w filtrze sa zwracane jako stream i beda
-         mapowane(zostanie wykonana na nich operacja) i zwracane jako stream !!! */
-        Optional<IngredientCommand> ingredientCommandOptional = recipe.getIngredients().stream()
-                .filter(ingredient -> ingredient.getId().equals(ingredientID))
-                .map(ingredient -> ingredientToIngredientCommand.convert(ingredient)).findFirst();
-
-        if (!ingredientCommandOptional.isPresent())
-        {
-            //todo impl error handling
-            System.out.println("Ingredient id not found: " + ingredientID);
-        }
-
-        return ingredientCommandOptional.get();
+        return ingredientOptional.get();
 
     }
 }

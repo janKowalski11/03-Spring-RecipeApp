@@ -6,7 +6,6 @@ Date: 30.12.2018
 
 import com.example.recipeproject.services.IngredientService;
 import com.example.recipeproject.services.RecipeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +16,10 @@ public class IngredientController
 {
 
     private final RecipeService recipeService;
+
     private final IngredientService ingredientService;
 
-    @Autowired
-    public IngredientController(RecipeService recipeService, IngredientService ingredientService)
+    public IngredientController(RecipeService recipeService,  IngredientService ingredientService)
     {
         this.recipeService = recipeService;
         this.ingredientService = ingredientService;
@@ -40,8 +39,7 @@ public class IngredientController
                                         @PathVariable String ingredientId,
                                         Model model)
     {
-        model.addAttribute("ingredient",
-                ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(ingredientId)));
+        model.addAttribute("ingredient", ingredientService.findById(Long.valueOf(ingredientId)));
 
         return "recipe/ingredient/show";
     }

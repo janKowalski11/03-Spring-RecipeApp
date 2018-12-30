@@ -1,7 +1,7 @@
 package com.example.recipeproject.controllers;
 
-import com.example.recipeproject.commands.IngredientCommand;
 import com.example.recipeproject.commands.RecipeCommand;
+import com.example.recipeproject.model.Ingredient;
 import com.example.recipeproject.services.IngredientService;
 import com.example.recipeproject.services.RecipeService;
 import org.junit.Before;
@@ -60,10 +60,10 @@ public class IngredientControllerTest
     public void testShowIngredient() throws Exception
     {
         //given
-        IngredientCommand ingredientCommand = new IngredientCommand();
+        Ingredient ingredient = new Ingredient();
 
         //when
-        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
+        when(ingredientService.findById(anyLong())).thenReturn(ingredient);
 
         //then
         mockMvc.perform(get("/recipe/1/ingredient/2/show"))
@@ -71,5 +71,7 @@ public class IngredientControllerTest
                 .andExpect(view().name("recipe/ingredient/show"))
                 .andExpect(model().attributeExists("ingredient"));
 
+
+        verify(ingredientService, times(1)).findById(anyLong());
     }
 }

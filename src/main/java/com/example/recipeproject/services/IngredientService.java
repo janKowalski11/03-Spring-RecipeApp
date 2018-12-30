@@ -4,9 +4,9 @@ Author: BeGieU
 Date: 30.12.2018
 */
 
-import com.example.recipeproject.commands.IngredientCommand;
+import com.example.recipeproject.model.Ingredient;
 
 public interface IngredientService
 {
-    IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientID);
+    Ingredient findById(Long ingredientID);
 }
