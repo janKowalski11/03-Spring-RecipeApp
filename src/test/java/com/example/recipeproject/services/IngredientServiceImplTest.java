@@ -45,8 +45,8 @@ public class IngredientServiceImplTest
     {
         MockitoAnnotations.initMocks(this);
 
-        ingredientCommandToIngredient=new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure());
-        ingredientToIngredientCommand=new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
+        ingredientCommandToIngredient = new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure());
+        ingredientToIngredientCommand = new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
 
 
         ingredientService = new IngredientServiceImpl(
@@ -81,7 +81,7 @@ public class IngredientServiceImplTest
     }
 
     @Test
-    public void testSaveOrUpdateIngredientCommand()
+    public void testSaveOrUpdateIngredientCommand() //Testing with recipe that contains no recipes
     {
         //given
         IngredientCommand command = new IngredientCommand();
@@ -106,5 +106,7 @@ public class IngredientServiceImplTest
         verify(recipeRepository, times(1)).save(any(Recipe.class));
 
     }
+
+
 
 }
