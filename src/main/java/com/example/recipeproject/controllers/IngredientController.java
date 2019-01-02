@@ -19,7 +19,7 @@ public class IngredientController
 
     private final IngredientService ingredientService;
 
-    public IngredientController(RecipeService recipeService,  IngredientService ingredientService)
+    public IngredientController(RecipeService recipeService, IngredientService ingredientService)
     {
         this.recipeService = recipeService;
         this.ingredientService = ingredientService;
@@ -42,5 +42,16 @@ public class IngredientController
         model.addAttribute("ingredient", ingredientService.findById(Long.valueOf(ingredientId)));
 
         return "recipe/ingredient/show";
+    }
+
+    @GetMapping("/recipe/{recipeId}/ingredient/{ingredientId}/update")
+    public String updateRecipeIngredient(@PathVariable String recipeId,
+                                         @PathVariable String ingredientId,
+                                         Model model)
+    {
+        //todo finish this,
+        model.addAttribute("ingredient", ingredientService.findById(Long.valueOf(ingredientId)));
+        return null;
+
     }
 }
