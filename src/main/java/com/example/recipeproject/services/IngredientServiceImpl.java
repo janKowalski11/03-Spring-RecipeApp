@@ -56,13 +56,16 @@ public class IngredientServiceImpl implements IngredientService
         return toIngredientCommand.convert(this.findById(id));
     }
 
-    //save of update ingredient
+    /* save of update ingredient, polega na dodaniu nowego skladnika lub znalezieniu
+     odpowiednika istniejacego i zaktualizowaniu go do tego trzeba jeszcze przeprowadzic
+     kopnwersje z command na plain*/
     @Override
     @Transactional
     public IngredientCommand saveOrUpdateIngredientCommand(IngredientCommand command)
     {
         Optional<Recipe> recipeOptional = recipeRepository.findById(command.getRecipeId());
 
+        //sprawdzamy czy nasz command nalezy do jakiegos przepisu jesli nie to wyjatek
         if (!recipeOptional.isPresent())
         {
 
@@ -80,6 +83,8 @@ public class IngredientServiceImpl implements IngredientService
                     .filter(ingredient -> ingredient.getId().equals(command.getId()))
                     .findFirst();
 
+            /* sprawdzamy czy dodajemy nasz skladnik czy aktualizujemy juz istniejacy
+            tutaj mamy aktualizacje  */
             if (ingredientOptional.isPresent())
             {
                 Ingredient ingredientFound = ingredientOptional.get();
@@ -91,18 +96,40 @@ public class IngredientServiceImpl implements IngredientService
             }
             else
             {
-                //add new Ingredient
-                recipe.addIngredient(toIngredient.convert(command));
+                //tutaj nie obecny wiec dodajemy nowy
+                Ingredient ingredient = toIngredient.convert(command);
+                ingredient.setRecipe(recipe);
+                recipe.addIngredient(ingredient);
+
             }
 
+            /* zapisujemy zaktualizowany przepis ze zaktualizowanym/dodanym skladnikiem */
             Recipe savedRecipe = recipeRepository.save(recipe);
 
-            //to do check for fail
-            return toIngredientCommand.convert(savedRecipe.getIngredients().stream()
+            /*odnajdujemy zapisany skladnik zeby go potem zwrocic na koncu metody*/
+            Optional<Ingredient> savedIngredientOpt = savedRecipe.getIngredients().stream()
                     .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
-                    .findFirst()
-                    .get());
+                    .findFirst();
+
+            //jesli nie udalo sie znalezc po id to szukamy po  opisie
+            if (!savedIngredientOpt.isPresent())
+            {
+                savedIngredientOpt=savedRecipe.getIngredients().stream()
+                        .filter(recipeIngredients->recipeIngredients.getDescription().equals(command.getDescription()))
+                        .filter(recipeIngredients->recipeIngredients.getAmount().equals(command.getAmount()))
+                        .filter(recipeIngredients->recipeIngredients.getUnitOfMeasure().getId().equals(command.getUnitOfMeasure().getId()))
+                        .findFirst();
+            }
+
+            //zwracamy
+            return toIngredientCommand.convert(savedIngredientOpt.get());
         }
 
+    }
+
+    @Override
+    public void deleteById(Long id)
+    {
+        ingredientRepository.deleteById(id);
     }
 }

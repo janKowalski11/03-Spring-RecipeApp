@@ -15,4 +15,7 @@ public interface IngredientService
 
     IngredientCommand saveOrUpdateIngredientCommand(IngredientCommand command);
 
+    void deleteById(Long id);
+
+
 }

@@ -5,6 +5,7 @@ Date: 30.12.2018
 */
 
 import com.example.recipeproject.commands.IngredientCommand;
+import com.example.recipeproject.commands.UnitOfMeasureCommand;
 import com.example.recipeproject.services.IngredientService;
 import com.example.recipeproject.services.RecipeService;
 import com.example.recipeproject.services.UnitOfMeasureService;
@@ -70,5 +71,32 @@ public class IngredientController
         IngredientCommand savedCommand = ingredientService.saveOrUpdateIngredientCommand(ingredient);
 
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
+    }
+
+    @GetMapping("/recipe/{recipeId}/ingredient/new")
+    public String newIngredient(@PathVariable String recipeId, Model model)
+    {
+        IngredientCommand ingredientCommand = new IngredientCommand();
+
+        if (recipeService.findCommandById(Long.valueOf(recipeId)) == null)
+            throw new RuntimeException("RECIPE NOT FOUND FOR ID: " + recipeId);
+
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
+        model.addAttribute("ingredient", ingredientCommand);
+
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+
+        return "recipe/ingredient/ingredient_form";
+    }
+
+    @GetMapping("/recipe/{recipeId}/ingredient/{ingredientId}/delete")
+    public String deleteIngredient(@PathVariable String ingredientId,
+                                   @PathVariable String recipeId)
+    {
+        ingredientService.deleteById(Long.valueOf(ingredientId));
+
+        return "redirect:/recipe/" + recipeId + "/ingredients";
+
     }
 }
