@@ -6,5 +6,5 @@ Date: 06.11.2018
 
 public enum Difficulty
 {
-    EASY, MEDIUM, HARD
+    EASY, MEDIUM, HARD,HARDCORE
 }

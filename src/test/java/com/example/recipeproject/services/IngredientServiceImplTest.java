@@ -107,6 +107,16 @@ public class IngredientServiceImplTest
 
     }
 
+    @Test
+    public void testDeleteById()
+    {
+        //Given
+        Long id = 1L;
+
+        ingredientService.deleteById(1L);
+
+        verify(ingredientRepository, times(1)).deleteById(anyLong());
 
 
+    }
 }
