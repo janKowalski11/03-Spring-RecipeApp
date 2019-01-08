@@ -59,6 +59,8 @@ public class IngredientServiceImpl implements IngredientService
     /* save of update ingredient, polega na dodaniu nowego skladnika lub znalezieniu
      odpowiednika istniejacego i zaktualizowaniu go do tego trzeba jeszcze przeprowadzic
      kopnwersje z command na plain*/
+    /*Transactonal- uzywane gdy korzystamy z transakcji
+     * więcej na temat https://kobietydokodu.pl/teoria-it-transakcje/ */
     @Override
     @Transactional
     public IngredientCommand saveOrUpdateIngredientCommand(IngredientCommand command)
