@@ -8,6 +8,7 @@ import com.example.recipeproject.commands.RecipeCommand;
 import com.example.recipeproject.services.ImageService;
 import com.example.recipeproject.services.RecipeService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 @Controller
 public class ImageController
@@ -50,24 +53,35 @@ public class ImageController
     }
 
     //spring gives us  HttpServletResponse
-    @GetMapping("recipe/{id}/recipeimage")
+    @GetMapping("recipe/{id}/recipe_image")
     public void renderImageFromDb(@PathVariable String id, HttpServletResponse response) throws IOException
     {
         RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(id));
 
-        /* TODO: causes NPE when recipe doesn't have image,
-         fix it, make very recipe to have default photo that "says image not set" */
-        byte[] byteArr = new byte[recipeCommand.getImage().length];
 
-        int i = 0;
-        for (Byte wrappedByte : recipeCommand.getImage())
+
+        byte[] byteArr = null;
+        if (recipeCommand.getImage() != null)
         {
-            byteArr[i++] = wrappedByte;//auto unboxing wrapped byte
-        }
+            byteArr = new byte[recipeCommand.getImage().length];
 
+            int i = 0;
+            for (Byte wrappedByte : recipeCommand.getImage())
+            {
+                byteArr[i++] = wrappedByte;//auto unboxing wrapped byte
+            }
+        }
+        else
+        {
+            File defaultPhoto = new ClassPathResource("static/images/guacamole400x400WithX.jpg").getFile();
+            byte[] defaultPhotoBytes = Files.readAllBytes(defaultPhoto.toPath());
+
+            byteArr=defaultPhotoBytes;
+        }
         response.setContentType("image/jpeg");
         InputStream is = new ByteArrayInputStream(byteArr);
         IOUtils.copy(is, response.getOutputStream());
+
     }
 
 }
