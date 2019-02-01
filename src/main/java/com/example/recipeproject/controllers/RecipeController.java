@@ -5,12 +5,17 @@ Date: 14.12.2018
 */
 
 import com.example.recipeproject.commands.RecipeCommand;
+import com.example.recipeproject.exceptions.NotFoundException;
 import com.example.recipeproject.services.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+@Slf4j//to display log massages
 @Controller
 public class RecipeController
 {
@@ -76,5 +81,30 @@ public class RecipeController
         recipeService.deleteById(Long.valueOf(id));
         return "redirect:/";
     }
+
+    /*
+     *      @ExceptionHandler(NotFoundException.class):
+     * jesli zostanie rzucony NOtFoundException class to ta metoda go lapie
+     * i go obsluguje.
+     *      @ResponseStatus(HttpStatus.NOT_FOUND) z dokumentacji:
+     * The status code is applied to the HTTP response when the handler
+     * method is invoked and overrides status information set by other means,
+     * like
+     * czyli 404 jest wykurwiany kiedy metoda zlapie notFoundException i
+     * jest wywolana
+     */
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ModelAndView handleNotFound()
+    {
+        log.error("Handling not found Exception");
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("404error");
+
+        return modelAndView;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.recipeproject.controllers;
 
 import com.example.recipeproject.commands.RecipeCommand;
+import com.example.recipeproject.exceptions.NotFoundException;
 import com.example.recipeproject.model.Recipe;
 import com.example.recipeproject.services.RecipeService;
 import org.junit.Before;
@@ -107,13 +108,12 @@ public class RecipeControllerTest
     @Test
     public void ShowByIdNotFound() throws Exception
     {
-        Recipe recipe=new Recipe();
-        recipe.setId(1L);
-        when(recipeService.findById(anyLong())).thenReturn(recipe);
+
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
 
         mockMvc.perform(get("/recipe/1/show"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("recipe/show"))
-                .andExpect(model().attributeExists("recipe"));
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"))
+                .andExpect(model().attributeDoesNotExist("recipe"));
     }
 }
