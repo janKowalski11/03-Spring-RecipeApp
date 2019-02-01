@@ -62,7 +62,6 @@ public class Recipe extends BaseEntity
       */
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
-
     /*
      *JoinTable:
      * -utworz polaczona tabele o nazwie name

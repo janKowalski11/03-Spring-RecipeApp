@@ -18,9 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Created by jt on 6/19/17.
- */
+
 public class RecipeControllerTest
 {
 
@@ -104,5 +102,18 @@ public class RecipeControllerTest
                 .andExpect(view().name("redirect:/"));
 
         verify(recipeService, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    public void ShowByIdNotFound() throws Exception
+    {
+        Recipe recipe=new Recipe();
+        recipe.setId(1L);
+        when(recipeService.findById(anyLong())).thenReturn(recipe);
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/show"))
+                .andExpect(model().attributeExists("recipe"));
     }
 }

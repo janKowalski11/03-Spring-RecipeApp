@@ -58,28 +58,24 @@ public class ImageController
     {
         RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(id));
 
-
-
-        byte[] byteArr = null;
+        byte[] photoByteArr;
         if (recipeCommand.getImage() != null)
         {
-            byteArr = new byte[recipeCommand.getImage().length];
+            photoByteArr = new byte[recipeCommand.getImage().length];
 
             int i = 0;
             for (Byte wrappedByte : recipeCommand.getImage())
             {
-                byteArr[i++] = wrappedByte;//auto unboxing wrapped byte
+                photoByteArr[i++] = wrappedByte;//auto unboxing wrapped byte
             }
         }
         else
         {
-            File defaultPhoto = new ClassPathResource("static/images/guacamole400x400WithX.jpg").getFile();
-            byte[] defaultPhotoBytes = Files.readAllBytes(defaultPhoto.toPath());
-
-            byteArr=defaultPhotoBytes;
+            File defaultPhoto = new ClassPathResource("static/images/image_not_set.png").getFile();
+            photoByteArr = Files.readAllBytes(defaultPhoto.toPath());
         }
         response.setContentType("image/jpeg");
-        InputStream is = new ByteArrayInputStream(byteArr);
+        InputStream is = new ByteArrayInputStream(photoByteArr);
         IOUtils.copy(is, response.getOutputStream());
 
     }

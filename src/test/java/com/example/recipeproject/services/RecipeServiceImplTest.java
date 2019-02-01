@@ -2,6 +2,7 @@ package com.example.recipeproject.services;
 
 import com.example.recipeproject.converters.RecipeCommandToRecipe;
 import com.example.recipeproject.converters.RecipeToRecipeCommand;
+import com.example.recipeproject.exceptions.NotFoundException;
 import com.example.recipeproject.model.Recipe;
 import com.example.recipeproject.repositories.RecipeRepository;
 import org.junit.Before;
@@ -20,7 +21,8 @@ import static org.mockito.Mockito.*;
 /**
  * Created by jt on 6/17/17.
  */
-public class RecipeServiceImplTest {
+public class RecipeServiceImplTest
+{
 
     RecipeServiceImpl recipeService;
 
@@ -34,14 +36,16 @@ public class RecipeServiceImplTest {
     RecipeCommandToRecipe recipeCommandToRecipe;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception
+    {
         MockitoAnnotations.initMocks(this);
 
         recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
-    public void getRecipeByIdTest() throws Exception {
+    public void getRecipeByIdTest() throws Exception
+    {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
@@ -56,7 +60,8 @@ public class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipesTest() throws Exception {
+    public void getRecipesTest() throws Exception
+    {
 
         Recipe recipe = new Recipe();
         HashSet receipesData = new HashSet();
@@ -74,12 +79,19 @@ public class RecipeServiceImplTest {
     @Test
     public void testDeleteById()
     {
-        Long idToDelete=1l;
+        Long idToDelete = 1l;
 
         recipeService.deleteById(idToDelete);
 
-        verify(recipeRepository,times(1)).deleteById(anyLong());
+        verify(recipeRepository, times(1)).deleteById(anyLong());
 
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void findRecipeByIdNotFound() throws Exception
+    {
+        when(recipeRepository.findById(anyLong())).thenReturn(Optional.empty());
+        recipeService.findById(1L);
     }
 
 }

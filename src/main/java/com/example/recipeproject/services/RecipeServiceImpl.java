@@ -7,6 +7,7 @@ Date: 08.11.2018
 import com.example.recipeproject.commands.RecipeCommand;
 import com.example.recipeproject.converters.RecipeCommandToRecipe;
 import com.example.recipeproject.converters.RecipeToRecipeCommand;
+import com.example.recipeproject.exceptions.NotFoundException;
 import com.example.recipeproject.model.Recipe;
 import com.example.recipeproject.repositories.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,9 @@ public class RecipeServiceImpl implements RecipeService
     {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(l);
 
-        if (!optionalRecipe.isPresent())
+         if (!optionalRecipe.isPresent())
         {
-            throw new RuntimeException("Recipe not found");
+            throw new NotFoundException("Recipe not found");
         }
 
         return optionalRecipe.get();
