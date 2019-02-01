@@ -113,7 +113,19 @@ public class RecipeControllerTest
 
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isNotFound())
-                .andExpect(view().name("404error"))
+                .andExpect(view().name("exceptions/404error"))
+                .andExpect(model().attributeDoesNotExist("recipe"));
+    }
+
+    @Test
+    public void ShowByIdBadIdInput() throws Exception
+    {
+
+        when(recipeService.findById(any())).thenThrow(NumberFormatException.class);
+
+        mockMvc.perform(get("/recipe/xd/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("exceptions/400error"))
                 .andExpect(model().attributeDoesNotExist("recipe"));
     }
 }
