@@ -10,12 +10,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j//to display log massages
 @Controller
 public class RecipeController
 {
+    private static final String RECIPE_RECIPEFORM_URL = "recipe/recipeform";
     private final RecipeService recipeService;
 
     @Autowired
@@ -32,7 +36,7 @@ public class RecipeController
     public String showById(@PathVariable String id, Model model)
     {
 
-        model.addAttribute("recipe", recipeService.findById( Long.parseLong(id)));
+        model.addAttribute("recipe", recipeService.findById(Long.parseLong(id)));
         return "recipe/show";
     }
 
@@ -54,24 +58,30 @@ public class RecipeController
      *  akcje obsłóżyć i do tego dedykowana jest ta metoda*/
 
     @PostMapping("recipe")
-    public String saveOrUpdate(@ModelAttribute("recipe") RecipeCommand command)
+    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand command, BindingResult bindingResult)
     {
+        if (bindingResult.hasErrors())
+        {
+            bindingResult.getAllErrors().forEach(objectError ->
+            {
+                log.debug(objectError.toString());
+            });
+            return RECIPE_RECIPEFORM_URL;
+        }
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
 
         //przekierowuje do innej metody controllera
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{id}/update")
+    @GetMapping("recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model)
     {
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
-        return "recipe/recipeform";
+        return "RECIPE_RECIPEFORM_URL";
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{id}/delete")
+    @GetMapping("recipe/{id}/delete")
     public String deleteById(@PathVariable String id)
     {
         System.out.println("Deleting id: " + id);
