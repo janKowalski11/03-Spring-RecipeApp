@@ -5,15 +5,12 @@ Date: 14.12.2018
 */
 
 import com.example.recipeproject.commands.RecipeCommand;
-import com.example.recipeproject.exceptions.NotFoundException;
 import com.example.recipeproject.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j//to display log massages
 @Controller
@@ -94,35 +91,6 @@ public class RecipeController
      * czyli 404 jest wykurwiany kiedy metoda zlapie notFoundException i
      * jest wywolana
      */
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ModelAndView handleNotFound(Exception e)
-    {
-        log.error(e.getMessage());
-        e.printStackTrace();
-
-
-        ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.addObject("exception", e);
-        modelAndView.setViewName("exceptions/404error");
-
-        return modelAndView;
-    }
-
-    @ExceptionHandler(NumberFormatException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ModelAndView handleNumberFormatException(Exception e)
-    {
-        log.error(e.getMessage());
-        e.printStackTrace();
-
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("exception",e);
-        modelAndView.setViewName("exceptions/400error");
-
-        return  modelAndView;
-    }
 
 
 }

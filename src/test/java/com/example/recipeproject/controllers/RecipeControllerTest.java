@@ -36,7 +36,9 @@ public class RecipeControllerTest
         MockitoAnnotations.initMocks(this);
 
         controller = new RecipeController(recipeService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new ExceptionHandlerController()) //inaczej mockMvc nie widzie globalnego kontrolera bledow i testy sie psuja
+                .build();
     }
 
     @Test
