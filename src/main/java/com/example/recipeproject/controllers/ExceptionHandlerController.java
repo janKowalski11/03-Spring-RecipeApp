@@ -21,6 +21,17 @@ import org.springframework.web.servlet.ModelAndView;
 public class ExceptionHandlerController
 {
 
+    /*
+     *      @ExceptionHandler(NotFoundException.class):
+     * jesli zostanie rzucony NOtFoundException class to ta metoda go lapie
+     * i go obsluguje.
+     *      @ResponseStatus(HttpStatus.NOT_FOUND) z dokumentacji:
+     * The status code is applied to the HTTP response when the handler
+     * method is invoked and overrides status information set by other means,
+     * like
+     * czyli 404 jest wykurwiany kiedy metoda zlapie notFoundException i
+     * jest wywolana
+     */
     @ExceptionHandler(NumberFormatException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView handleNumberFormatException(Exception e)

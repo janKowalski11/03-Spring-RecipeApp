@@ -78,7 +78,7 @@ public class RecipeController
     public String updateRecipe(@PathVariable String id, Model model)
     {
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
-        return "RECIPE_RECIPEFORM_URL";
+        return RECIPE_RECIPEFORM_URL;
     }
 
     @GetMapping("recipe/{id}/delete")
@@ -90,17 +90,6 @@ public class RecipeController
         return "redirect:/";
     }
 
-    /*
-     *      @ExceptionHandler(NotFoundException.class):
-     * jesli zostanie rzucony NOtFoundException class to ta metoda go lapie
-     * i go obsluguje.
-     *      @ResponseStatus(HttpStatus.NOT_FOUND) z dokumentacji:
-     * The status code is applied to the HTTP response when the handler
-     * method is invoked and overrides status information set by other means,
-     * like
-     * czyli 404 jest wykurwiany kiedy metoda zlapie notFoundException i
-     * jest wywolana
-     */
 
 
 }
